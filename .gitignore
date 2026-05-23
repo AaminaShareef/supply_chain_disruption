@@ -1,0 +1,25 @@
+# Environment variables — never commit this
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+env/
+
+# VS Code settings
+.vscode/
+
+# Data files
+data/training/*
+data/events/*
+data/models/*
+
+# Test files
+test_phase3.py
+
+# Logs
+*.log
