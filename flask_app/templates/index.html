@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}Supply Chain Risk Monitor — Search{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .hero {
+        min-height: calc(100vh - 64px - 80px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+    }
+
+    .hero-content {
+        text-align: center;
+        max-width: 640px;
+        width: 100%;
+    }
+
+    .hero-icon {
+        width: 72px;
+        height: 72px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 8px 24px rgba(37,99,235,0.25);
+    }
+
+    .hero h1 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 0.75rem;
+        line-height: 1.2;
+    }
+
+    .hero p {
+        font-size: 1rem;
+        color: #64748b;
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+    }
+
+    .search-box {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        border: 1px solid #e2e8f0;
+    }
+
+    .search-input-wrapper {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 0.875rem 1.25rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        outline: none;
+        transition: border-color 0.2s;
+        color: #1a202c;
+    }
+
+    .search-input:focus {
+        border-color: #2563eb;
+    }
+
+    .search-input::placeholder {
+        color: #94a3b8;
+    }
+
+    .search-btn {
+        padding: 0.875rem 1.75rem;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .search-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+    }
+
+    .examples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .example-tag {
+        padding: 0.4rem 0.875rem;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .example-tag:hover {
+        background: #dbeafe;
+        border-color: #93c5fd;
+        color: #2563eb;
+    }
+
+    .examples-label {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-bottom: 0.75rem;
+    }
+
+    .error-msg {
+        background: #fee2e2;
+        color: #dc2626;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 3rem;
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .feature-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 1.25rem;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+    }
+
+    .feature-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #1a202c;
+        margin-bottom: 0.25rem;
+    }
+
+    .feature-desc {
+        font-size: 0.75rem;
+        color: #64748b;
+        line-height: 1.4;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div>
+        <div class="hero-content">
+            <div class="hero-icon">🏭</div>
+            <h1>Supply Chain Risk Monitor</h1>
+            <p>Enter a manufacturer type to instantly identify raw material risks,
+               supply disruptions, and geopolitical threats in real-time.</p>
+
+            <div class="search-box">
+                {% if error %}
+                <div class="error-msg">{{ error }}</div>
+                {% endif %}
+
+                <form action="/analyse" method="POST">
+                    <div class="search-input-wrapper">
+                        <input
+                            type="text"
+                            name="manufacturer"
+                            class="search-input"
+                            placeholder="e.g. Gold Manufacturer, Semiconductor company..."
+                            id="searchInput"
+                            autocomplete="off"
+                            required
+                        />
+                        <button type="submit" class="search-btn">
+                            Analyse Risk →
+                        </button>
+                    </div>
+                </form>
+
+                <div class="examples-label">Try an example:</div>
+                <div class="examples">
+                    <button class="example-tag" onclick="setSearch('Gold Manufacturer')">🥇 Gold Manufacturer</button>
+                    <button class="example-tag" onclick="setSearch('Semiconductor company')">💾 Semiconductor</button>
+                    <button class="example-tag" onclick="setSearch('Electric vehicle manufacturer')">🚗 Electric Vehicle</button>
+                    <button class="example-tag" onclick="setSearch('Pharmaceutical manufacturer')">💊 Pharmaceutical</button>
+                    <button class="example-tag" onclick="setSearch('Steel manufacturer')">🔩 Steel</button>
+                    <button class="example-tag" onclick="setSearch('Solar panel manufacturer')">☀️ Solar Panel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">AI Powered</div>
+                <div class="feature-desc">Automatically identifies raw materials for any manufacturer</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📰</div>
+                <div class="feature-title">Real-time News</div>
+                <div class="feature-desc">Fetches latest news from Google News and NewsAPI</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <div class="feature-title">Country Filter</div>
+                <div class="feature-desc">Filter disruptions by country, domain and risk level</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setSearch(value) {
+        document.getElementById('searchInput').value = value;
+        document.getElementById('searchInput').focus();
+    }
+</script>
+{% endblock %}
